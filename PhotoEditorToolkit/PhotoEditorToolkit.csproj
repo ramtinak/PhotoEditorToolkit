@@ -6,9 +6,14 @@
     <PackageTags></PackageTags>
     <LangVersion>8.0</LangVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="global.json" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Win2D.uwp" Version="1.25.0" />

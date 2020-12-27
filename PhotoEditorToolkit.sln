@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoEditorToolkit", "Photo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example\Example.csproj", "{B476F7FB-DD84-40C7-83F6-1DCAA44F0895}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{96C44AA6-1C1A-452C-9E87-D5483BAF7E04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{29954666-3C0F-430D-86CD-1D51BA2C336E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +74,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{55C1A3D9-821C-4E00-AC31-0D0B831EF1B8} = {96C44AA6-1C1A-452C-9E87-D5483BAF7E04}
+		{B476F7FB-DD84-40C7-83F6-1DCAA44F0895} = {29954666-3C0F-430D-86CD-1D51BA2C336E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A0C5452-4FE6-4A61-B255-A90C195A26B3}

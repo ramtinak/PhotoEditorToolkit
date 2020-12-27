@@ -1,0 +1,14 @@
+<Project Sdk="MSBuild.Sdk.Extras">
+  <PropertyGroup>
+    <TargetFramework>uap10.0.14393</TargetFramework>
+    <Title>BBBBBB</Title>
+    <Description></Description>
+    <PackageTags></PackageTags>
+    <LangVersion>8.0</LangVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="global.json" />
+  </ItemGroup>
+
+</Project>

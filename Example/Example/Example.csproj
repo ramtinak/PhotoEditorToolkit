@@ -153,10 +153,13 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>6.1.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PhotoEditorToolkit\PhotoEditorToolkit.csproj">
-      <Project>{55c1a3d9-821c-4e00-ac31-0d0b831ef1b8}</Project>
+      <Project>{3924d2d8-45c2-4205-bb9c-397af9ff4895}</Project>
       <Name>PhotoEditorToolkit</Name>
     </ProjectReference>
   </ItemGroup>

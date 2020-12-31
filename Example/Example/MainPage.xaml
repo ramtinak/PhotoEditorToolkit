@@ -6,9 +6,51 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:controls="using:PhotoEditorToolkit.Controls"
+    xmlns:wct="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
-    <Grid>
+    <Grid Background="#FF481B1B">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition x:Name="KeyboardPlaceholder" Height="Auto"/>
+        </Grid.RowDefinitions>
+        <controls:CustomImageCropper x:Name="Cropper" Padding="12,32,12,8" IsCropEnabled="False">
+            <Grid>
+                <controls:CustomCanvas
+                    x:Name="Canvas"
+                    StrokesChanged="Canvas_StrokesChanged"
+                    IsEnabled="True"/>
+            </Grid>
+        </controls:CustomImageCropper>
+        <!--<Grid Height="30" Width="30">
+            
+ 
+        <Polygon Fill="LightBlue"
+         Points=" 11.01,0.74 8.53,1.2 5.75,3.18 2.97,5.16 1.49,8.03 0,10.9 0,20.45 0,30 4,30 8,30 8,21.16 8,12.31 9.83,10.65 11.66,9 20.33,9 29,9 29,4.5 29,0 21.25,0.14 13.5,0.27 11.01,0.74" />
+        </Grid>-->
+        <!--<wct:ImageCropper>
+            <Grid/>
+        </wct:ImageCropper>-->
+        <controls:ColorSlider 
+            x:Name="DrawSlider"
+            StrokeChanged="DrawSlider_StrokeChanged"
+            Margin="14,0,14,0"
+            MaxWidth="400"
+            Grid.Row="1"/>
+
+        <Button Grid.RowSpan="3" Content="OPEN" Click="Button_Click" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Button Grid.RowSpan="3" Content="DRAW" Click="Button_Click_1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <Button Grid.RowSpan="3" Content="Undo" Click="Button_Click_2" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button Grid.RowSpan="3" Content="Redo" Click="Button_Click_3" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Button Grid.RowSpan="3" Content="Effect" Click="Button_Click_4" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <Button Grid.RowSpan="3" Content="Remove Effect" Click="Button_Click_5" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button Grid.RowSpan="3" Content="Rem IMG" Click="Button_Click_6" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+        <Button Grid.RowSpan="3" Content="Crop" Margin="0 42" Click="Button_Click_7" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button Grid.RowSpan="3" Content="Save" Margin="0 42" Click="Button_Click_8" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
     </Grid>
 </Page>

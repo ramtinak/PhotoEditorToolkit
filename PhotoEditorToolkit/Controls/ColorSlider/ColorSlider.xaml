@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:PhotoEditorToolkit.Controls">
+    <Style TargetType="local:ColorSlider">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ColorSlider">
+                    <Grid x:Name="LayoutRoot" Height="20">
+                        <Grid
+                            x:Name="Container"
+                            Background="Transparent"
+                            VerticalAlignment="Top"
+                            Height="20">
+
+                            <Border
+                                VerticalAlignment="Bottom"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                Height="20"/>
+                            <Border
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left">
+                                <Border 
+                                    Margin="-24,-14"
+                                    Width="48"
+                                    Height="48">
+                                    <Border
+                                        x:Name="Thumb"
+                                        Background="{ThemeResource SystemControlBackgroundChromeWhiteBrush}"
+                                        BorderBrush="{ThemeResource SystemControlForegroundChromeHighBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="24">
+                                        <Ellipse
+                                            x:Name="ThumbDrop"
+                                            Stroke="White"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Margin="1.5,1.5,0,0"
+                                            Width="40"
+                                            Height="40"/>
+                                    </Border>
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

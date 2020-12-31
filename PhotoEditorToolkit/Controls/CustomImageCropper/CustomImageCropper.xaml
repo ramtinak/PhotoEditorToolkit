@@ -1,0 +1,170 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:PhotoEditorToolkit.Controls">
+    <Style TargetType="local:CustomImageCropper">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="Padding" Value="48" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:CustomImageCropper">
+                    <Grid Padding="{TemplateBinding Padding}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.150" From="Disabled">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CubicEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                    <VisualTransition GeneratedDuration="0:0:0.150" From="Normal" To="Disabled">
+                                        <VisualTransition.GeneratedEasingFunction>
+                                            <CubicEase EasingMode="EaseInOut"/>
+                                        </VisualTransition.GeneratedEasingFunction>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation From="0.9" To="0.6" Storyboard.TargetName="Clip" Storyboard.TargetProperty="Opacity"/>
+                                        <DoubleAnimation From="0" To="1.0" Storyboard.TargetName="ThumbsContainer" Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="ImageThumb.ManipulationMode" Value="None"/>
+                                        <Setter Target="ThumbsContainer.IsHitTestVisible" Value="False"/>
+                                        <Setter Target="Clip.IsHitTestVisible" Value="False"/>
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0.6" To="0.9" Storyboard.TargetName="Clip" Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid.Resources>
+                            <Style x:Key="TopLeftThumbStyle" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Width" Value="30" />
+                                <Setter Property="Height" Value="30" />
+                                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
+                                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundChromeHighBrush}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="local:CustomImageCropperThumb">
+                                            <Polygon Fill="{TemplateBinding Background}"
+                                                     Stroke="{TemplateBinding BorderBrush}"
+                                                     StrokeThickness="{TemplateBinding BorderThickness}"
+                                                     Points=" 6.3,1.96 3.1,3.91 1.55,6.91 0,9.9 0,19.45 0,29 4,29 8,29 8,20.5 8,12 10,10 12,8 20.5,8 29,8 29,4 29,0 19.25,0 9.5,0.01 6.3,1.96" />
+
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style x:Key="TopRightThumbStyle" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Width" Value="30" />
+                                <Setter Property="Height" Value="30" />
+                                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
+                                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundChromeHighBrush}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="local:CustomImageCropperThumb">
+                                            <Polygon Fill="{TemplateBinding Background}"
+                                                     Stroke="{TemplateBinding BorderBrush}"
+                                                     StrokeThickness="{TemplateBinding BorderThickness}"
+                                                     Points=" 0,3.91 0,8 8.43,8 16.86,8 18.93,10.63 21,13.27 21,21.14 21,29 25,29 29,29 29,20.47 29,11.94 27.63,8.72 26.26,5.5 23.55,3 20.84,0.5 10.42,0.16 0,-0.18 0,3.91" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style x:Key="BottomLeftThumbStyle" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Width" Value="30" />
+                                <Setter Property="Height" Value="30" />
+                                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
+                                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundChromeHighBrush}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="local:CustomImageCropperThumb">
+                                            <Polygon Fill="{TemplateBinding Background}"
+                                                     Stroke="{TemplateBinding BorderBrush}"
+                                                     StrokeThickness="{TemplateBinding BorderThickness}"
+                                                     Points=" 0.16,10.42 0.5,20.84 3,23.55 5.5,26.26 8.72,27.63 11.94,29 20.47,29 29,29 29,25 29,21 21.14,21 13.27,21 10.63,18.93 8,16.86 8,8.43 8,0 3.91,0 -0.18,0 0.16,10.42" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style x:Key="BottomRightThumbStyle" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Width" Value="30" />
+                                <Setter Property="Height" Value="30" />
+                                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
+                                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundChromeHighBrush}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="local:CustomImageCropperThumb">
+                                            <Polygon Fill="{TemplateBinding Background}"
+                                                     Stroke="{TemplateBinding BorderBrush}"
+                                                     StrokeThickness="{TemplateBinding BorderThickness}"
+                                                     Points=" 20.85,8.46 20.5,16.93 18.79,18.64 17.07,20.36 8.54,20.8 0,21.25 0,25.13 0,29 8.6,29 17.2,29 20.62,27.38 24.04,25.75 26.27,22.63 28.5,19.5 28.84,9.75 29.19,0 25.2,0 21.2,0 20.85,8.46" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style x:Key="SideThumbStyle" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="local:CustomImageCropperThumb">
+                                            <Grid Background="Transparent" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style x:Key="HorizontalSideThumbStyle" BasedOn="{StaticResource SideThumbStyle}" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Height" Value="20" />
+                                <Setter Property="Padding" Value="0,9" />
+                            </Style>
+                            <Style x:Key="VerticalSideThumbStyle" BasedOn="{StaticResource SideThumbStyle}" TargetType="local:CustomImageCropperThumb">
+                                <Setter Property="Width" Value="20" />
+                                <Setter Property="Padding" Value="9,0" />
+                            </Style>
+                        </Grid.Resources>
+
+                        <Grid x:Name="LayoutRoot" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Grid x:Name="ImageThumb" RenderTransformOrigin="0.5,0.5" ManipulationMode="Rotate,Scale,TranslateX,TranslateY">
+                                <Grid.RenderTransform>
+                                    <CompositeTransform x:Name="ImageThumbTransform" />
+                                </Grid.RenderTransform>
+                                <Image x:Name="ImageViewer" Stretch="Uniform"/>
+                                <ContentPresenter x:Name="ImagePresenter"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Path x:Name="Clip" Opacity="0.6" Fill="{TemplateBinding Background}" Stroke="Transparent" StrokeThickness="1"/>
+
+                            <Grid x:Name="ThumbsContainer" Opacity="0">
+                                <Rectangle x:Name="MiddleThumb" Fill="Transparent" />
+
+                                <local:CustomImageCropperThumb x:Name="LeftThumb" Style="{StaticResource VerticalSideThumbStyle}" Margin="-11,-11,-10,-11" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+                                <local:CustomImageCropperThumb x:Name="TopThumb" Style="{StaticResource HorizontalSideThumbStyle}" Margin="-11,-11,-11,-10" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+                                <local:CustomImageCropperThumb x:Name="RightThumb" Style="{StaticResource VerticalSideThumbStyle}" Margin="-10,-11,-11,-11" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+                                <local:CustomImageCropperThumb x:Name="BottomThumb" Style="{StaticResource HorizontalSideThumbStyle}" Margin="-11,-10,-11,-11" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+
+                                <local:CustomImageCropperThumb x:Name="TopLeftThumb" Style="{StaticResource TopLeftThumbStyle}" Margin="-5,-5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <local:CustomImageCropperThumb x:Name="TopRightThumb" Style="{StaticResource TopRightThumbStyle}" Margin="-5,-5" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                                <local:CustomImageCropperThumb x:Name="BottomLeftThumb" Style="{StaticResource BottomLeftThumbStyle}" Margin="-5,-5" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                                <local:CustomImageCropperThumb x:Name="BottomRightThumb" Style="{StaticResource BottomRightThumbStyle}" Margin="-5,-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

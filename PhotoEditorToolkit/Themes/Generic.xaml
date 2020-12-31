@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///PhotoEditorToolkit/Controls/PhotoEditor/PhotoEditor.xaml" />
+        <ResourceDictionary Source="ms-appx:///PhotoEditorToolkit/Controls/CustomCanvas/CustomCanvas.xaml" />
+        <ResourceDictionary Source="ms-appx:///PhotoEditorToolkit/Controls/CustomColorPicker/CustomColorPicker.xaml" />
+        <ResourceDictionary Source="ms-appx:///PhotoEditorToolkit/Controls/CustomImageCropper/CustomImageCropper.xaml" />
+        <ResourceDictionary Source="ms-appx:///PhotoEditorToolkit/Controls/ColorSlider/ColorSlider.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

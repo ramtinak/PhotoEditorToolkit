@@ -1,6 +1,7 @@
 ﻿// A modified version of https://github.com/UnigramDev/Unigram/blob/develop/Unigram/Unigram/Controls/PencilCanvas.cs
 
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -9,10 +10,12 @@ using PhotoEditorToolkit.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -174,7 +177,49 @@ namespace PhotoEditorToolkit.Controls
             foreach (var builder in _builders.Values)
                 DrawPath(args.DrawingSession, builder, sender.Size.ToVector2());
         }
+        //public async void Rotate(CanvasDrawingSession graphics, Rect originalImageRect, float degrees)
+        //{
+        //    int height = (int)Math.Sqrt(originalImageRect.Width * originalImageRect.Width + originalImageRect.Height * originalImageRect.Height);
 
+        //    CanvasDevice device = CanvasDevice.GetSharedDevice();
+        //    CanvasRenderTarget webCardImage = null;
+        //    CanvasBitmap bitmap = null;
+        //    var logicalDpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+        //    Vector2 endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
+
+        //    try
+        //    {
+        //        webCardImage = new CanvasRenderTarget(device, height, height, logicalDpi);
+        //        using (var ds = webCardImage.CreateDrawingSession())
+        //        {
+        //            ds.Clear(Colors.Transparent);
+
+        //            using (FileStream imageStream = new FileStream(originalImagepath, FileMode.Open))
+        //            {
+        //                IRandomAccessStream fileStream = imageStream.AsRandomAccessStream();
+        //                bitmap = await CanvasBitmap.LoadAsync(device, fileStream);
+        //            }
+
+        //            ICanvasImage image = new Transform2DEffect
+        //            {
+        //                Source = bitmap,
+        //                TransformMatrix = Matrix3x2.CreateRotation(degrees, endpoint),
+        //            };
+        //            var sourceRect = image.GetBounds(ds);
+        //            ds.DrawImage(image, new Rect(originalImageRect.X, originalImageRect.Y, originalImageRect.Width, originalImageRect.Height), sourceRect, 1, CanvasImageInterpolation.HighQualityCubic);
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    } 
+        //    //Save Image Code here
+        //}
+        //private static double Radian(double degrees)
+        //{
+        //    return degrees * Math.PI / 180d;
+        //}
         private CanvasDrawingSession GetDrawings(CanvasDrawEventArgs args = null, bool always = false)
         {
             //CanvasDevice device = CanvasDevice.GetSharedDevice();
@@ -344,8 +389,9 @@ namespace PhotoEditorToolkit.Controls
                     cropRectangle.Width * decoder.PixelWidth,
                     cropRectangle.Height * decoder.PixelHeight);
 
-                var (scaledCrop, scaledSize) = ImageHelper.Scale(cropRectangle, new Size(decoder.PixelWidth, decoder.PixelHeight), new Size(cropWidth, cropHeight), 1280, 0);
-
+                var tupple = ImageHelper.Scale(cropRectangle, new Size(decoder.PixelWidth, decoder.PixelHeight), new Size(cropWidth, cropHeight), 1280, 0);
+                var scaledCrop = tupple.Item1;
+                var scaledSize = tupple.Item2;
                 var bounds = new BitmapBounds
                 {
                     X = (uint)scaledCrop.X,

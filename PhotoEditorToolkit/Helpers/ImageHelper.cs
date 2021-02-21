@@ -45,7 +45,9 @@ namespace PhotoEditorToolkit.Helpers
                     cropRectangle.Width * decoder.PixelWidth,
                     cropRectangle.Height * decoder.PixelHeight);
 
-                var (scaledCrop, scaledSize) = Scale(cropRectangle, new Size(decoder.PixelWidth, decoder.PixelHeight), new Size(cropWidth, cropHeight), min, max);
+                var tupple = Scale(cropRectangle, new Size(decoder.PixelWidth, decoder.PixelHeight), new Size(cropWidth, cropHeight), min, max);
+                var scaledCrop = tupple.Item1;
+                var scaledSize = tupple.Item2;
 
                 var bounds = new BitmapBounds
                 {
@@ -78,7 +80,7 @@ namespace PhotoEditorToolkit.Helpers
 
             return file;
         }
-        internal static (Rect, Size) Scale(Rect rect, Size start, Size size, int min, int max)
+        internal static Tuple<Rect, Size> Scale(Rect rect, Size start, Size size, int min, int max)
         {
             var width = rect.Width * size.Width / start.Width;
             var height = rect.Height * size.Height / start.Height;
@@ -111,7 +113,7 @@ namespace PhotoEditorToolkit.Helpers
             var w = rect.Width * ratioW / start.Width;
             var h = rect.Height * ratioH / start.Height;
 
-            return (new Rect(x, y, w, h), new Size(ratioW, ratioH));
+            return new Tuple<Rect, Size>(new Rect(x, y, w, h), new Size(ratioW, ratioH));
         }
         public static async Task<IRandomAccessStream> OpenReadAsync(StorageFile sourceFile)
         {

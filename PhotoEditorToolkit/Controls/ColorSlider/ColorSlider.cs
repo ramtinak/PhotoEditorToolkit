@@ -30,6 +30,8 @@ namespace PhotoEditorToolkit.Controls
         private Vector2 _value;
         private Vector2 _current;
 
+        public Vector2 Value => _value;
+        public Vector2 Default => new Vector2(1f, 0.22f);
         public ColorSlider()
         {
             DefaultStyleKey = typeof(ColorSlider);
@@ -57,12 +59,9 @@ namespace PhotoEditorToolkit.Controls
             _current = _value;
 
             if (_layoutRoot == null || _layoutRoot.ActualWidth == 0)
-            {
                 return;
-            }
 
             var w = (float)_layoutRoot.ActualWidth;
-            //var h = 180f;
 
             var weight = 4 + (_current.Y * 16);
 
@@ -169,7 +168,7 @@ namespace PhotoEditorToolkit.Controls
             var h = 180f;
 
             var offsetX = position.X / w;
-            var left = /*Math.Clamp*/Clamp(offsetX, 0, 1);
+            var left = Clamp(offsetX, 0, 1);
             var bottom = _current.Y;
 
             _current.X = left;
@@ -177,7 +176,7 @@ namespace PhotoEditorToolkit.Controls
             if (position.Y < h)
             {
                 var offsetY = position.Y / h;
-                bottom = 1 - /*Math.Clamp*/Clamp(offsetY, 0, 1);
+                bottom = 1 - Clamp(offsetY, 0, 1);
 
                 _current.Y = bottom;
             }
@@ -196,54 +195,32 @@ namespace PhotoEditorToolkit.Controls
                 _thumbVisual.StopAnimation("Scale");
                 _thumbVisual.StopAnimation("Offset");
 
-                //if (ApiInformation.IsMethodPresent(".Compositor", "CreateSpringVector3Animation"))
-                if (false)
+                _container.Height = 200;
+                _container.Margin = new Thickness(0, -180, 0, 0);
+
+                var batch = Window.Current.Compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+                batch.Completed += (s, args) =>
                 {
-#pragma warning disable CS0162 // Unreachable code detected
-                    var scale = Window.Current.Compositor.CreateSpringVector3Animation();
-#pragma warning restore CS0162 // Unreachable code detected
-                    scale.InitialValue = new Vector3(zoom ? 0.5f : 1);
-                    scale.FinalValue = new Vector3(zoom ? 1 : 0.5f);
+                    _container.Height = zoom ? 200 : 20;
+                    _container.Margin = new Thickness(0, zoom ? -180 : 0, 0, 0);
+                };
 
-                    var offset = Window.Current.Compositor.CreateSpringVector3Animation();
-                    //offset.InitialValue = new Vector3(_current.X * w, -60, 0);
-                    offset.InitialValue = _thumbVisual.Offset;
-                    offset.FinalValue = new Vector3(_current.X * w, zoom ? -60 : 0, 0);
+                var scale = Window.Current.Compositor.CreateSpringVector3Animation();
+                scale.InitialValue = new Vector3(zoom ? 0.5f : 1);
+                scale.FinalValue = new Vector3(zoom ? 1 : 0.5f);
 
-                    _thumbVisual.StartAnimation("Scale", scale);
-                    _thumbVisual.StartAnimation("Offset", offset);
-                }
-                else
-                {
-                    _container.Height = 200;
-                    _container.Margin = new Thickness(0, -180, 0, 0);
+                var offset = Window.Current.Compositor.CreateVector3KeyFrameAnimation();
+                offset.InsertKeyFrame(0, _thumbVisual.Offset);
+                offset.InsertKeyFrame(1, new Vector3(_current.X * w, zoom ? -60 : 0, 0));
 
-                    var batch = Window.Current.Compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-                    batch.Completed += (s, args) =>
-                    {
-                        _container.Height = zoom ? 200 : 20;
-                        _container.Margin = new Thickness(0, zoom ? -180 : 0, 0, 0);
-                    };
+                _thumbVisual.StartAnimation("Scale", scale);
+                _thumbVisual.StartAnimation("Offset", offset);
 
-                    var scale = Window.Current.Compositor.CreateSpringVector3Animation();
-                    scale.InitialValue = new Vector3(zoom ? 0.5f : 1);
-                    scale.FinalValue = new Vector3(zoom ? 1 : 0.5f);
+                batch.End();
 
-                    var offset = Window.Current.Compositor.CreateVector3KeyFrameAnimation();
-                    offset.InsertKeyFrame(0, _thumbVisual.Offset);
-                    offset.InsertKeyFrame(1, new Vector3(_current.X * w, zoom ? -60 : 0, 0));
-
-                    _thumbVisual.StartAnimation("Scale", scale);
-                    _thumbVisual.StartAnimation("Offset", offset);
-
-                    batch.End();
-                }
             }
             else
-            {
-                //_thumbVisual.StopAnimation("Offset");
                 _thumbVisual.Offset = new Vector3(_current.X * w, -(bottom * h) - 60, 0);
-            }
         }
 
         private Color ColorForValue(double location)
@@ -289,8 +266,7 @@ namespace PhotoEditorToolkit.Controls
 
         private Color InterpolateColor(Color color1, Color color2, double factor)
         {
-            factor = /*Math.Clamp*/Clamp(factor, 0, 1);
-
+            factor = Clamp(factor, 0, 1);
 
             var r1 = color1.R / 255f;
             var r2 = color2.R / 255f;
@@ -308,28 +284,50 @@ namespace PhotoEditorToolkit.Controls
 
         private readonly Color[] _colors = new[]
         {
-            Color.FromArgb(0xff, 0xea, 0x27, 0x39),
-            Color.FromArgb(0xff, 0xdb, 0x3a, 0xd2),
-            Color.FromArgb(0xff, 0x30, 0x51, 0xe3),
-            Color.FromArgb(0xff, 0x49, 0xc5, 0xed),
-            Color.FromArgb(0xff, 0x80, 0xc8, 0x64),
-            Color.FromArgb(0xff, 0xfc, 0xde, 0x65),
-            Color.FromArgb(0xff, 0xfc, 0x96, 0x4d),
-            Color.FromArgb(0xff, 0x00, 0x00, 0x00),
-            Color.FromArgb(0xff, 0xff, 0xff, 0xff)
+            Color.FromArgb(0xff, 0xea, 0x08, 0x0c), // real RED
+            Color.FromArgb(0xff, 0xea, 0x27, 0x39), //red
+            Color.FromArgb(0xff, 0xdb, 0x3a, 0xd2), //pink
+            Color.FromArgb(0xff, 0x00, 0x03, 0xe3), // real BLUE
+            Color.FromArgb(0xff, 0x30, 0x51, 0xe3), //blue
+            Color.FromArgb(0xff, 0x49, 0xc5, 0xed), //cyan
+            Color.FromArgb(0xff, 0x16, 0xc8, 0x15), // real GREEN
+            Color.FromArgb(0xff, 0x80, 0xc8, 0x64), //green
+            Color.FromArgb(0xff, 0xfc, 0xde, 0x65), //yellow
+            Color.FromArgb(0xff, 0xe9, 0xfc, 0x0c), // real YELLOW
+            Color.FromArgb(0xff, 0xfc, 0x96, 0x4d), //orange
+            Color.FromArgb(0xff, 0xfc, 0x41, 0x00), // real ORANGE
+            Color.FromArgb(0xff, 0x00, 0x00, 0x00), //black
+            Color.FromArgb(0xff, 0xff, 0xff, 0xff)  //white
         };
 
         private readonly double[] _offsets = new[]
         {
-            0.0,  //red
-            0.14, //pink
-            0.24, //blue
-            0.39, //cyan
-            0.49, //green
-            0.62, //yellow
-            0.73, //orange
-            0.85, //black
+            0.0,  
+            0.08,  
+            0.19, 
+            0.28, 
+            0.35, 
+            0.47,
+            0.55,
+            0.60,
+            0.67,
+            0.72,
+            0.75,
+            0.80, 
+            0.85,
             1.0
         };
+//        private readonly double[] _offsets = new[]
+//{
+//            0.0,  //red
+//            0.14, //pink
+//            0.24, //blue
+//            0.39, //cyan
+//            0.49, //green
+//            0.62, //yellow
+//            0.73, //orange
+//            0.85, //black
+//            1.0
+//        };
     }
 }

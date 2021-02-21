@@ -282,12 +282,15 @@ namespace PhotoEditorToolkit.Controls
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
 
+                var minW = 20 / w;
+                var minH = 20 / h;
+
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetX = (position.X - startPosition.X) / w;
                 var offsetY = (position.Y - startPosition.Y) / h;
 
-                var left = Clamp(m_rectangle.Left + offsetX, 0, m_rectangle.Right);
-                var top = Clamp(m_rectangle.Top + offsetY, 0, m_rectangle.Bottom);
+                var left = Clamp(m_rectangle.Left + offsetX, 0, Math.Max(m_rectangle.Right, minW) - minW);
+                var top = Clamp(m_rectangle.Top + offsetY, 0, Math.Max(m_rectangle.Bottom, minH) - minH);
                 var width = m_rectangle.Right - left;
                 var height = m_rectangle.Bottom - top;
 
@@ -323,11 +326,13 @@ namespace PhotoEditorToolkit.Controls
             {
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
+                
+                var minH = 20 / h;
 
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetY = (position.Y - startPosition.Y) / h;
 
-                var top = Clamp(m_rectangle.Top + offsetY, 0, m_rectangle.Bottom);
+                var top = Clamp(m_rectangle.Top + offsetY, 0, Math.Max(m_rectangle.Bottom, minH) - minH);
                 var height = m_rectangle.Bottom - top;
 
                 var cropScale = (m_current.Width * w) / (height * h);
@@ -351,10 +356,12 @@ namespace PhotoEditorToolkit.Controls
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
 
+                var minW = 20 / w;
+
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetX = (position.X - startPosition.X) / w;
 
-                var left = Clamp(m_rectangle.Left + offsetX, 0, m_rectangle.Right);
+                var left = Clamp(m_rectangle.Left + offsetX, 0, Math.Max(m_rectangle.Right, minW) - minW);
                 var width = m_rectangle.Right - left;
 
                 var cropScale = (width * w) / (m_current.Height * h);
@@ -370,7 +377,6 @@ namespace PhotoEditorToolkit.Controls
                 UpdateTutteCose(m_current);
             }
         }
-
         private void BottomRightThumb_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
             if (e.Pointer.IsInContact && m_pointerPositions.TryGetValue(e.Pointer.PointerId, out Point startPosition))
@@ -378,12 +384,15 @@ namespace PhotoEditorToolkit.Controls
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
 
+                var minW = 20 / w;
+                var minH = 20 / h;
+
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetX = (position.X - startPosition.X) / w;
                 var offsetY = (position.Y - startPosition.Y) / h;
 
-                var right = Clamp(m_rectangle.Right + offsetX, m_current.Left, 1);
-                var bottom = Clamp(m_rectangle.Bottom + offsetY, m_current.Top, 1);
+                var right = Clamp(m_rectangle.Right + offsetX, m_current.Left + minW, 1);
+                var bottom = Clamp(m_rectangle.Bottom + offsetY, m_current.Top + minH, 1);
                 var width = right - m_rectangle.Left;
                 var height = bottom - m_rectangle.Top;
 
@@ -416,11 +425,13 @@ namespace PhotoEditorToolkit.Controls
             {
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
+                
+                var minH = 20 / h;
 
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetY = (position.Y - startPosition.Y) / h;
 
-                var bottom = Clamp(m_rectangle.Bottom + offsetY, m_current.Top, 1);
+                var bottom = Clamp(m_rectangle.Bottom + offsetY, m_current.Top + minH, 1);
                 var height = bottom - m_rectangle.Top;
 
                 var cropScale = (m_current.Width * w) / (height * h);
@@ -444,10 +455,12 @@ namespace PhotoEditorToolkit.Controls
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
 
+                var minW = 20 / w;
+
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetX = (position.X - startPosition.X) / w;
 
-                var right = Clamp(m_rectangle.Right + offsetX, m_current.Left, 1);
+                var right = Clamp(m_rectangle.Right + offsetX, m_current.Left + minW, 1);
                 var width = right - m_rectangle.Left;
 
                 var cropScale = (width * w) / (m_current.Height * h);
@@ -471,12 +484,15 @@ namespace PhotoEditorToolkit.Controls
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
 
+                var minW = 20 / w;
+                var minH = 20 / h;
+
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetX = (position.X - startPosition.X) / w;
                 var offsetY = (position.Y - startPosition.Y) / h;
 
-                var left = Clamp(m_rectangle.Left + offsetX, 0, m_rectangle.Right);
-                var bottom = Clamp(m_rectangle.Bottom + offsetY, m_current.Top, 1);
+                var left = Clamp(m_rectangle.Left + offsetX, 0, Math.Max(m_rectangle.Right, minW) - minW);
+                var bottom = Clamp(m_rectangle.Bottom + offsetY, m_current.Top + minH, 1);
                 var width = m_rectangle.Right - left;
                 var height = bottom - m_rectangle.Top;
 
@@ -511,12 +527,15 @@ namespace PhotoEditorToolkit.Controls
                 var w = m_layoutRoot.ActualWidth;
                 var h = m_layoutRoot.ActualHeight;
 
+                var minW = 20 / w;
+                var minH = 20 / h;
+
                 var position = e.GetCurrentPoint(m_layoutRoot).Position;
                 var offsetX = (position.X - startPosition.X) / w;
                 var offsetY = (position.Y - startPosition.Y) / h;
 
-                var right = Clamp(m_rectangle.Right + offsetX, m_current.Left, 1);
-                var top = Clamp(m_rectangle.Top + offsetY, 0, m_rectangle.Bottom);
+                var right = Clamp(m_rectangle.Right + offsetX, m_current.Left + minW, 1);
+                var top = Clamp(m_rectangle.Top + offsetY, 0, Math.Max(m_rectangle.Bottom, minH) - minH);
                 var width = right - m_rectangle.Left;
                 var height = m_rectangle.Bottom - top;
 
@@ -621,11 +640,14 @@ namespace PhotoEditorToolkit.Controls
 
             UpdateTutteCose(m_rectangle, animate);
         }
-
+        private double UsedAspectRatio =>
+            AspectRatio != null && AspectRatio > 0 ? AspectRatio.Value : -1;
         private double GetProportionsFactor(BitmapProportions proportions, double defaultValue)
         {
             switch (proportions)
             {
+                case BitmapProportions.AspectRatio:
+                    return UsedAspectRatio;
                 case BitmapProportions.Original:
                     return m_imageSize.Width / m_imageSize.Height;
                 case BitmapProportions.Square:
@@ -723,6 +745,16 @@ namespace PhotoEditorToolkit.Controls
         #endregion
 
         #region Properties
+        public double? AspectRatio
+        {
+            get { return (double?)GetValue(AspectRatioProperty); }
+            set { SetValue(AspectRatioProperty, value); }
+        }
+        /// <summary>
+        /// Identifies the <see cref="AspectRatio"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty AspectRatioProperty =
+            DependencyProperty.Register(nameof(AspectRatio), typeof(double?), typeof(CustomImageCropper), new PropertyMetadata(null, OnAspectRatioChanged));
 
         public int PixelWidth => (int)m_imageSize.Width;
         public int PixelHeight => (int)m_imageSize.Height;
@@ -749,7 +781,8 @@ namespace PhotoEditorToolkit.Controls
         #region Source
 
         public SoftwareBitmap _software;
-        public async Task SetSourceAsync(StorageFile file, BitmapRotation rotation = BitmapRotation.None, BitmapFlip flip = BitmapFlip.None, BitmapProportions proportions = BitmapProportions.Custom, Rect? cropRectangle = null)
+        public async Task SetSourceAsync(StorageFile file, BitmapRotation rotation = BitmapRotation.None, 
+            BitmapFlip flip = BitmapFlip.None, BitmapProportions proportions = BitmapProportions.AspectRatio, Rect? cropRectangle = null)
         {
             _rotation = rotation;
             _flip = flip;
@@ -842,12 +875,23 @@ namespace PhotoEditorToolkit.Controls
                 : 1;
         }
 
+        private static void OnAspectRatioChanged(
+            DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var target = (CustomImageCropper)d;
+            target.UpdateAspectRatio(true);
+        }
+        private void UpdateAspectRatio(bool animate = false)
+        {
+            SetProportions(BitmapProportions.AspectRatio, false);
+        }
         #endregion
     }
 
 
     public enum BitmapProportions
     {
+        AspectRatio,
         Custom,
         Original,
         Square,

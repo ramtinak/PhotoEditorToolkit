@@ -152,5 +152,10 @@ namespace Example
                 await Canvas.SaveAsync(file);
             }
         }
+
+        private void DrawSlider_StrokeChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

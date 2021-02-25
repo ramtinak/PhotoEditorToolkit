@@ -96,13 +96,15 @@
                                     Grid.Column="0"
                                     Windows10version1809:CornerRadius="1"
                                     Background="Transparent"
-                                    Content="&#xE7A7;" />
+                                    Content="&#xE7A7;"
+                                    Visibility="Visible" />
                                 <Button
                                     x:Name="RedoButton"
                                     Grid.Column="1"
                                     Windows10version1809:CornerRadius="1"
                                     Background="Transparent"
-                                    Content="&#xE7A6;" />
+                                    Content="&#xE7A6;"
+                                    Visibility="Visible" />
                                 <Button
                                     x:Name="BrushButton"
                                     Grid.Column="2"

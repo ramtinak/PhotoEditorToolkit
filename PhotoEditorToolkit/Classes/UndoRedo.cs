@@ -33,6 +33,7 @@ namespace PhotoEditorToolkit.Classes
             UndoStack.Push(item);
             CurrentItem = item;
             RedoStack.Clear();
+            UndoHappened?.Invoke(this, new UndoRedoEventArgs<T>(CurrentItem));
         }
 
         public void Undo()

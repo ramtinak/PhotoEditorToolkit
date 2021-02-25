@@ -57,6 +57,17 @@ namespace PhotoEditorToolkit.Controls
             BrushButton,
             EraseButton,
             AcceptButton;
+        #region Properties
+
+        public double? AspectRatio
+        {
+            get { return (double?)GetValue(AspectRatioProperty); }
+            set { SetValue(AspectRatioProperty, value); }
+        }
+        public static readonly DependencyProperty AspectRatioProperty =
+            DependencyProperty.Register(nameof(AspectRatio), typeof(double?), typeof(PhotoEditor), new PropertyMetadata(null, OnAspectRatioChanged));
+
+        #endregion Properties
 
         public PhotoEditor()
         {
@@ -88,8 +99,11 @@ namespace PhotoEditorToolkit.Controls
         }
         void InitEvents()
         {
-            Canvas.PathBuilderHistory.UndoHappened += OnPathBuilderHistoryUndoRedoHappened;
-            Canvas.PathBuilderHistory.RedoHappened += OnPathBuilderHistoryUndoRedoHappened;
+            Canvas.Loaded += (s, e) =>
+            {
+                Canvas.PathBuilderHistory.UndoHappened += OnPathBuilderHistoryUndoRedoHappened;
+                Canvas.PathBuilderHistory.RedoHappened += OnPathBuilderHistoryUndoRedoHappened;
+            };
 
             Canvas.StrokesChanged += CanvasStrokesChanged;
             DrawSlider.StrokeChanged += DrawSliderStrokeChanged;
@@ -132,7 +146,8 @@ namespace PhotoEditorToolkit.Controls
                 Canvas.SetRect(Cropper.CropRectangle);
 
                 DisbaleCloseButton();
-                CropMode(true, false);
+                CropMode(true);
+                DrawMode(false);
             }
             catch { }
         }
@@ -147,13 +162,11 @@ namespace PhotoEditorToolkit.Controls
         }
 
         #region Draw/Crop
-        bool ShowHideDrawingMode(bool show, bool setDefaultAsWell = true)
+        bool ShowHideDrawingMode(bool show)
         {
             if (DrawToolbar == null) return false;
             var visibility = DrawToolbar.Visibility == (show ? Visibility.Visible : Visibility.Collapsed);
             DrawToolbar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-            if (setDefaultAsWell)
-                ShowHideDefaultToolbar(!show);
             return visibility;
         }
         void EnableToolbarUndo(bool show)
@@ -171,17 +184,16 @@ namespace PhotoEditorToolkit.Controls
             if (Cropper != null)
             {
                 Cropper.IsCropEnabled = false;
-                Cropper.AspectRatio = 1.62d;
+                AspectRatio = 1.62d;
             }
             if (Canvas != null)
                 Canvas.IsEnabled = false;
-            ShowHideDrawingMode(false, false);
+            ShowHideDrawingMode(false);
             ShowHideDefaultToolbar(true);
 
-            Canvas.PathBuilderHistory.Reset();
+            Canvas?.PathBuilderHistory.Reset();
             EnableToolbarUndo(false);
             EnableToolbarRedo(false);
-            //UndoButton.Background = RedoButton.Background = new SolidColorBrush(Colors.Transparent);
         }
         public bool ShowHideDefaultToolbar(bool show)
         {
@@ -189,11 +201,9 @@ namespace PhotoEditorToolkit.Controls
             DefaultToolbar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
             return visibility;
         }
-        public void CropMode(bool show, bool canvasAsWell = true)
+        public void CropMode(bool show)
         {
             Cropper.IsCropEnabled = show;
-            if (canvasAsWell)
-                Canvas.IsEnabled = !show;
 
             if (AspectRatioSlider != null)
                 AspectRatioSlider.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
@@ -230,7 +240,7 @@ namespace PhotoEditorToolkit.Controls
             try
             {
                 if (AspectRatioSlider?.Value != -1)
-                    Cropper.AspectRatio = AspectRatioSlider.Value;
+                    AspectRatio = AspectRatioSlider.Value;
             }
             catch { }
         }
@@ -245,39 +255,40 @@ namespace PhotoEditorToolkit.Controls
             Canvas.StrokeThickness = DrawSlider.StrokeThickness;
         }
 
+        private static void OnAspectRatioChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var editor = (PhotoEditor)d;
+            if (editor?.Cropper != null)
+                editor.Cropper.AspectRatio = (double?)e.NewValue;
+        }
         #endregion
 
         #region Methods
 
         #endregion
         #region Buttons
-
+        bool IsEditingMode = false;
         private void DrawButtonClick(object sender, RoutedEventArgs e)
         {
-            FindName("DrawToolbar");
-            FindName("DrawSlider");
+            IsEditingMode = true;
             ShowHideDrawingMode(true);
             Canvas.Mode = CanvasMode.Stroke;
-            CropMode(false, false);
-
+            CropMode(false);
             DrawMode(true);
+        }
+        private void CropButtonClick(object sender, RoutedEventArgs e)
+        {
+            IsEditingMode = true;
+            DrawMode(false);
+            CropMode(true);
         }
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            if (ShowHideDrawingMode(false))
-            {
-                //ShowHideDefaultToolbar(true);
-                return;
-            }
-            DrawMode(false);
-        }
-
-        private void CropButtonClick(object sender, RoutedEventArgs e)
-        {
-
-            DrawMode(false);
-            CropMode(true);
+            //if (ShowHideDrawingMode(false))
+            //    return;
+            //DrawMode(false);
+            AcceptButtonClick(sender, e);
         }
 
         private void UndoButtonClick(object sender, RoutedEventArgs e)
@@ -306,15 +317,19 @@ namespace PhotoEditorToolkit.Controls
 
         private void AcceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (!CancelButton.IsEnabled || Cropper.IsEnabled)
+            //DefaultToolbar  DrawToolbar   DrawSlider  AspectRatioSlider
+            if (!CancelButton.IsEnabled ||IsEditingMode/* Cropper.IsEnabled*/)
             {
                 CancelButton.IsEnabled = DefaultToolbar.IsTapEnabled = true;
-
+                //Cropper.IsEnabled = false;
                 ShowHideDefaultToolbar(true);
-                DrawMode(true);
-                CropMode(false, false);
+                ShowHideDrawingMode(false);
+                DrawMode(false);
+                CropMode(false);
+                IsEditingMode = false;
                 return;
             }
+            var a = "";
         }
         #endregion Buttons
 
